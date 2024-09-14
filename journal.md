@@ -389,4 +389,58 @@ Ordering::Equal => {
 
 ### Gestion de saisies invalides
 
--
+- Pour améliorer le jeu, on modifie le code pour ignorer les entrées non numériques au lieu de faire planter le programme, permettant ainsi à l'utilisateur de continuer à essayer de deviner.  
+**Q: **
+```
+let supposition: u32 = match supposition.trim().parse() {
+            Ok(nombre) => nombre,
+            Err(_) => continue,
+};
+```  
+- On remplace ``expect`` par une expression ``match`` pour gérer proprement les erreurs, ``parse()`` retourne un ``Result`` avec les variantes ``Ok`` et ``Err``. De cette façon on peut traiter les erreurs sans faire planter le programme.  
+**Q: Quelle est l'alternative de "expect" pour traiter la valeur d'une variable?**
+- Si ``parse()`` réussit, elle retourne ``Ok`` contenant le nombre converti. L'expression ``match`` correspondra à ce motif et assignera le nombre à supposition, où nous en avons besoin.  
+**Q: Quelle est la valeur d'argument de "Ok"?**
+- Si ``parse()`` échoue, elle retourne ``Err`` avec des informations sur l'erreur. Le motif ``Err(_)`` dans l'expression ``match`` correspond à toutes les variantes ``Err``, peu importe leur contenu. Le programme exécutera alors le code de la branche ``continue``, qui passe à l'itération suivante de la boucle et demande un nouveau nombre, ignorant ainsi les erreurs de ``parse()``.  
+**Q: Quel est le rôle de l'expression "continue"?**
+- Finalement, on peux supprimer l'instruction qui affiche le nombre secret qui était utile pour le test. Le jeu est maintenant fini, on peut le lancer et y jouer.
+```
+use rand::Rng;
+use std::cmp::Ordering;
+use std::io;
+
+fn main() {
+    println!("Devinez le nombre !");
+
+    let nombre_secret = rand::thread_rng().gen_range(1..101);
+
+    loop {
+        println!("Veuillez entrer un nombre.");
+
+        let mut supposition = String::new();
+
+        io::stdin()
+            .read_line(&mut supposition)
+            .expect("Échec de la lecture de l'entrée utilisateur");
+
+        let supposition: u32 = match supposition.trim().parse() {
+            Ok(nombre) => nombre,
+            Err(_) => continue,
+        };
+
+        println!("Votre nombre : {}", supposition);
+
+        match supposition.cmp(&nombre_secret) {
+            Ordering::Less => println!("C'est plus !"),
+            Ordering::Greater => println!("C'est moins !"),
+            Ordering::Equal => {
+                println!("Vous avez gagné !");
+                break;
+            }
+        }
+    }
+}
+```
+
+
+# 3. Les concepts courants de programmation
