@@ -496,5 +496,218 @@ fn main() {
 
 #### Types scalaires
 
-- Un type scalaire en Rust représente une seule valeur et comprend quatre types principaux : les entiers, les nombres à virgule flottante, les booléens et les caractères, similaires à d'autres langages de programmation.
+- Un type scalaire en Rust représente une seule valeur et comprend quatre types principaux : les entiers, les nombres à virgule flottante, les booléens et les caractères, similaires à d'autres langages de programmation.  
 **Q: Quels sont les quatre types principaux de scalaires en Rust ?**
+
+###### Types de nombres entiers
+
+- Les entiers en Rust sont des nombres sans partie décimale, et le type u32 indique qu'une valeur est un entier non signé de 32 bits. Les entiers négatifs sont indiqués par un type commençant par "i". Il existe plusieurs types d'entiers intégrés au langage, permettant de déclarer des valeurs entières de différentes manières.  
+**Q: Quel type d'entier indique une valeur non signée de 32 bits en Rust ?**
+- Les entiers en Rust peuvent être signés (acceptent les valeurs négatives) ou non signés (toujours positifs), chaque variante ayant une taille explicite. Les nombres signés utilisent le complément à deux pour leur stockage.  
+**Q: Quelle méthode de stockage est utilisée pour les nombres signés en Rust ?**
+- Les variantes signées en Rust peuvent stocker des nombres dans l'intervalle de -2^(n-1) à 2^(n-1) - 1, tandis que les variantes non signées peuvent stocker des nombres de 0 à 2^n - 1.  
+**Q: Quel est l'intervalle de valeurs qu'un i8 peut stocker ?**
+- Les types ``isize`` et ``usize`` en Rust varient en fonction de l'architecture de l'ordinateur, utilisant 64 bits sur une architecture 64 bits et 32 bits sur une architecture 32 bits.  
+**Q: Quelles sont les tailles des types isize et usize selon l'architecture de l'ordinateur ?**
+- Les littéraux d'entiers en Rust peuvent être écrits dans différentes formes et permettre l'utilisation de suffixes pour spécifier le type, comme 57u8. Ils peuvent également inclure des underscores (_) comme séparateurs pour améliorer la lisibilité.  
+**Q: Comment pouvez-vous spécifier le type d'un littéral numérique en Rust ?**
+- Pour déterminer le type d'entier à utiliser en Rust, vous pouvez vous référer aux choix par défaut, qui sont généralement appropriés. Par exemple, le type d'entier par défaut est ``i32``. Les types ``isize`` et ``usize`` sont principalement utilisés lors de l'indexation de collections.  
+**Q: Quel est le type d'entier par défaut en Rust ?**
+
+###### Dépassement d'entier
+
+- Un type ``u8`` peut stocker des valeurs entre 0 et 255. Si vous essayez d'assigner une valeur comme 256 à cette variable, vous rencontrerez un dépassement d'entier (integer overflow). En mode débogage, Rust inclut des vérifications pour détecter ces dépassements, et si cela se produit, le programme va paniquer et se terminer avec une erreur.  
+**Q: Que se passe-t-il si vous essayez d'assigner une valeur supérieure à 255 à une variable de type u8 ?**
+- En mode publication avec le drapeau --release, Rust ne vérifie pas les dépassements d'entiers, ce qui entraîne un comportement de rebouclage du complément à deux. Par exemple, une valeur de 256 pour un u8 deviendra 0, et 257 deviendra 1. Bien que le programme ne panique pas, cela peut conduire à des valeurs inattendues, et se fier à ce rebouclage est une mauvaise pratique.  
+**Q: Que se passe-t-il en mode publication si un dépassement d'entier se produit dans un programme Rust ?**
+- Rust propose plusieurs méthodes pour gérer explicitement les dépassements d'entiers via sa bibliothèque standard :
+
+1. ``wrapping_*`` : Enveloppez les opérations pour qu'elles retournent des valeurs en bouclant (ex. wrapping_add).
+1. ``checked_*`` : Retourne None en cas de dépassement (ex. checked_add).
+1. ``overflowing_*`` : Retourne la valeur et un booléen indiquant s'il y a eu un dépassement (ex. overflowing_add).
+1. ``saturating_*`` : Saturation à la valeur minimale ou maximale (ex. saturating_add).  
+**Q: Quelles méthodes peuvent être utilisées en Rust pour gérer les dépassements d'entiers ?**
+
+###### Types de nombres à virgule flottante
+- Rust offre deux types primitifs pour les nombres à virgule flottante : f32 et f64, correspondant à des tailles de 32 bits et 64 bits respectivement. Le type par défaut est f64 en raison de sa précision supérieure, étant donné qu'il est presque aussi rapide que f32 sur les processeurs modernes. Tous les flottants ont un signe.  
+**Q: Quels sont les deux types primitifs pour les nombres à virgule flottante en Rust ?**
+- Les nombres à virgule flottante en Rust sont conformes à la norme IEEE-754, où f32 représente un flottant à simple précision et f64 un flottant à double précision.  
+**Q: Quelle norme est utilisée pour représenter les nombres à virgule flottante en Rust ?**
+
+###### Les opérations numériques
+
+- Rust propose des opérations mathématiques fondamentales pour tous les types de nombres, y compris l'addition, la soustraction, la multiplication, la division et le modulo. Les divisions entre entiers arrondissent le résultat à l'entier le plus proche.  
+**Q: Quelles opérations mathématiques Rust offre-t-il pour les types de nombres ?**
+- Chaque instruction utilise un opérateur mathématique pour calculer une valeur unique, qui est ensuite assignée à une variable.  
+**Q: Où peut-on trouver la liste de tous les opérateurs fournis par Rust ?**
+
+###### Types booléen
+
+- En Rust, le type booléen a deux valeurs possibles : true et false. Il occupe un octet en mémoire et est désigné par le mot-clé bool.  
+**Q: Quelles sont les deux valeurs possibles pour le type booléen en Rust ?**
+- Les valeurs booléennes, qui prennent les valeurs true et false, sont principalement utilisées dans les structures conditionnelles, comme l'instruction if. Leur utilisation permet de contrôler le flux du programme en fonction de conditions spécifiques.  
+**Q: Dans quel type de structures les valeurs booléennes sont-elles principalement utilisées en Rust ?**
+
+###### Le type caractère
+
+- Le type char en Rust représente le type de caractère le plus élémentaire. Chaque valeur char représente un caractère unique, y compris des caractères Unicode.  
+**Q: Que représente le type char en Rust ?**
+- En Rust, un littéral char est défini par des guillemets simples, tandis que les chaînes de caractères utilisent des doubles guillemets. Le type char occupe quatre octets en mémoire et représente une valeur scalaire Unicode, englobant un large éventail de caractères, y compris les lettres accentuées, les caractères asiatiques, les emojis et d'autres symboles. Toutefois, la définition de ce qu'est un "caractère" peut varier, et cette notion peut ne pas correspondre à celle de char en Rust.  
+**Q: Quelle est la taille en mémoire du type char en Rust ?**
+
+#### Les types composés
+
+- Les types composés en Rust permettent de regrouper plusieurs valeurs en un seul type. Les deux principaux types composés de Rust sont les tuples et les tableaux.  
+**Q: Quels sont les deux types composés de base en Rust ?**
+
+###### Tuples
+
+- Un tuple permet de regrouper plusieurs valeurs de types différents en un type composé. Sa taille est fixe, ce qui signifie qu'une fois déclaré, on ne peut ni ajouter ni enlever de valeurs.  
+**Q: Quelle caractéristique détermine la taille d'un tuple en Rust ?**
+- Pour créer un tuple en Rust, on écrit une liste de valeurs séparées par des virgules entre parenthèses. Chaque valeur dans le tuple peut avoir un type différent, et bien que les annotations de type soient possibles, elles ne sont pas obligatoires.  
+**Q: Comment crée-t-on un tuple en Rust ?**
+- Dans Rust, une variable peut être liée à un tuple entier, car celui-ci est considéré comme un seul élément. Pour accéder à un élément spécifique de ce tuple, on peut utiliser le filtrage par motif pour le déstructurer.  
+**Q: Comment peut-on accéder à un élément spécifique d'un tuple en Rust ?**
+- En Rust, il est également possible d'accéder directement à chaque élément d'un tuple en utilisant un point (.) suivi de l'indice de l'élément souhaité.  
+**Q: Comment peut-on accéder directement à un élément d'un tuple en Rust ?**
+- Le type unité, représenté par le tuple vide (), a une seule valeur, également (). Il est utilisé pour indiquer qu'une expression ne retourne pas de valeur significative, retournant plutôt la valeur unité par défaut.  
+**Q: Quel est le nom du type représenté par le tuple vide () en Rust ?**
+
+###### Tableaux
+
+- Les tableaux en Rust permettent de regrouper plusieurs valeurs du même type dans une collection de taille fixe, définie au moment de la déclaration. Ils sont déclarés en écrivant une liste de valeurs entre crochets, séparées par des virgules.  
+**Q: Quelle est la principale différence entre un tableau et un tuple en Rust concernant les types d'éléments ?**
+- Les tableaux en Rust sont utilisés pour stocker des données de taille fixe sur la pile, tandis que les vecteurs sont des collections plus flexibles qui peuvent changer de taille. Si la taille des éléments n'est pas connue à l'avance, il est recommandé d'opter pour un vecteur. Les tableaux en Rust sont plus adaptés lorsque le nombre d'éléments est fixe.  
+**Q: Dans quel cas est-il préférable d'utiliser un vecteur plutôt qu'un tableau en Rust ?**
+- Le type d'un tableau en Rust est défini en utilisant des crochets, suivi du type des éléments, d'un point-virgule et du nombre d'éléments, comme ``[i32; 5]`` pour un tableau d'entiers de 32 bits contenant 5 éléments.  
+**Q: Comment déclare-t-on le type d'un tableau en Rust ?**
+- Pour initialiser un tableau avec la même valeur pour chaque élément, vous indiquez la valeur initiale, un point-virgule, puis la taille du tableau, le tout entre crochets.comme ``[0; 5]`` crée un tableau de 5 éléments, tous initialisés à 0.  
+**Q: Comment initialise-t-on un tableau avec la même valeur pour chaque élément en Rust ?**
+
+###### Accéder aux éléments d'un tableau
+
+- Un tableau en Rust est un bloc de mémoire de taille fixe alloué sur la pile. On peut accéder aux éléments d'un tableau via l'indexation ``tableau[i]``.  
+**Q: Comment accède-t-on aux éléments d'un tableau en Rust ?** 
+
+###### Accès incorrect à un élément d'un tableau
+
+- Lorsque vous accédez à un élément d'un tableau en Rust, le langage effectue une vérification à l'exécution pour s'assurer que l'indice fourni est valide. Si l'indice est inférieur à la taille du tableau, l'accès est autorisé. En revanche, si l'indice est supérieur ou égal à la taille du tableau, Rust déclenche une panique, arrêtant ainsi le programme pour éviter des erreurs d'accès mémoire.  
+**Q: Que fait Rust si l'indice d'un tableau est supérieur ou égal à sa taille ?**
+- Rust applique des principes de sécurité de la mémoire en vérifiant les indices d'accès aux tableaux. Contrairement à de nombreux langages de bas niveau, Rust effectue des vérifications à l'exécution pour éviter d'accéder à des emplacements mémoire invalides. Si un indice incorrect est utilisé, Rust arrête immédiatement l'exécution au lieu de permettre l'accès à une mémoire potentiellement dangereuse, contribuant ainsi à la sécurité du programme.  
+**Q: Quelle est la principale différence entre Rust et de nombreux langages de bas niveau concernant la vérification des indices d'accès aux tableaux ?**
+
+### 3.3. Les fonctions
+
+- Les fonctions sont essentielles en Rust, avec la fonction ``main`` servant de point d'entrée pour de nombreux programmes. Les nouvelles fonctions sont déclarées avec le mot-clé ``fn``.  
+**Q: Quelle est la fonction principale dans un programme Rust et comment déclare-t-on de nouvelles fonctions ?**
+- Rust utilise la convention de nommage snake_case pour les fonctions et les variables. On définit une fonction en utilisant fn, suivie d'un nom et d'accolades pour indiquer son corps.  
+**Q: Quelle convention de nommage Rust utilise-t-il pour les fonctions et comment définit-on une fonction ?**
+- Le code s'exécute dans l'ordre où les instructions apparaissent, et une fonction peut être définie après son appel sans problème, tant qu'elle est définie quelque part dans le code.  
+**Q: Est-il possible de définir une fonction après son appel dans le code Rust ?**
+- Les fonctions peuvent avoir des paramètres, qui sont des variables dans la signature de la fonction. Les valeurs passées à ces paramètres lors de l'appel sont appelées arguments.  
+**Q: Quelle est la différence entre un paramètre et un argument dans le contexte des fonctions en Rust ?**
+- Lorsqu'on ajoute un paramètre à une fonction, on doit spécifier son type. Cela aide le compilateur à comprendre avec quel type il travaille, et plusieurs paramètres peuvent être déclarés en les séparant par des virgules.  
+**Q: Pourquoi est-il important de spécifier le type des paramètres dans les fonctions Rust ?**
+- Le corps des fonctions contient des instructions et éventuellement une expression finale. Les instructions ne retournent pas de valeur, tandis que les expressions sont évaluées pour retourner une valeur.  
+**Q: Quelle est la différence entre une instruction et une expression dans une fonction en Rust ?**
+- Les corps de fonction en Rust peuvent contenir des instructions et des expressions, avec un exemple montrant comment un bloc peut évaluer une valeur sans point-virgule.  
+**Q: Que se passe-t-il si on ajoute un point-virgule à la fin d'une expression dans le corps d'une fonction ?**
+- Les fonctions peuvent retourner des valeurs. On déclare le type de retour après une flèche (->), et la valeur retournée est généralement la dernière expression dans le corps de la fonction.  
+**Q: Comment déclare-t-on le type de retour d'une fonction en Rust ?**
+Le dernier élément d'une fonction est souvent la valeur retournée, et une fonction peut également utiliser le mot-clé return pour sortir précocement avec une valeur.  
+**Q: Que se passe-t-il si une fonction Rust ne termine pas par une expression retournée ?**
+- Un exemple montre comment une fonction retourne un nombre. Si une instruction est utilisée à la place d'une expression, cela peut provoquer une erreur due à un type de retour inadéquat.  
+**Q: Pourquoi une fonction peut-elle générer une erreur de type si une instruction est utilisée à la place d'une expression pour la valeur retournée ?**
+- Il est important de ne pas mettre de point-virgule à la fin d'une expression que l'on veut retourner, car cela la transforme en instruction, ce qui empêche le retour de valeur attendu.  
+**Q: Quel effet a l'ajout d'un point-virgule à la fin d'une expression qui devrait être retournée dans une fonction ?**
+
+### 3.4. Les commentaires
+
+- Les développeurs utilisent des commentaires dans leur code pour fournir des explications utiles aux lecteurs, même si le compilateur les ignore. Cela aide à rendre le code plus compréhensible.  
+**Q: Pourquoi les développeurs ajoutent-ils des commentaires dans leur code ?**
+
+- Dans Rust, les commentaires simples commencent par deux barres obliques (//) et s'étendent jusqu'à la fin de la ligne. Pour les commentaires plus longs, il faut placer les barres obliques sur chaque ligne.  
+**Q: Comment sont formatés les commentaires simples dans Rust ?**
+
+- Les commentaires peuvent être ajoutés à la fin des lignes de code pour fournir des explications. Parfois, ils sont placés au-dessus du code pour clarifier la fonction du code qu'ils annotent.  
+**Q: Comment peut-on utiliser les commentaires dans le code Rust par rapport aux lignes de code ?**
+
+- Rust propose également des commentaires de documentation, qui sont une forme spéciale de commentaire, à traiter dans un chapitre futur.  
+**Q: Quel type de commentaire Rust propose-t-il en plus des commentaires classiques ?**
+
+### 3.5. Structures de controle
+
+- Les structures de contrôle, comme les expressions if et les boucles, permettent de contrôler l'exécution du code en fonction de conditions.  
+**Q: Quels sont les types de structures de contrôle en Rust ?**
+
+#### Les expressions if
+
+- Une expression if permet d'exécuter un bloc de code si une condition est remplie. Si la condition n'est pas remplie, le bloc de code ne s'exécute pas.  
+**Q: Quel est le rôle d'une expression if dans Rust ?**
+
+- Dans le code donné, la condition vérifie si la variable `nombre` est inférieure à 5, et le bloc de code s'exécute en fonction de cette vérification.  
+**Q: Que vérifie la condition dans l'exemple donné avec l'expression if ?**
+
+- On peut ajouter une expression else pour définir un bloc de code alternatif qui s'exécute si la condition est fausse. Si aucun else n'est fourni, le code passe simplement au suivant.  
+**Q: Quelle est la fonction d'une expression else dans une structure if ?**
+
+- Le code illustre le résultat de l'exécution avec une valeur vérifiée et une valeur non vérifiée pour `nombre`.  
+**Q: Que se passe-t-il lorsque la condition n'est pas vérifiée dans l'exemple donné ?**
+
+- Il est essentiel que la condition dans un if soit de type bool. Si ce n'est pas le cas, une erreur est générée. Rust ne convertit pas automatiquement les types.  
+**Q: Que se passe-t-il si la condition dans une expression if n'est pas un booléen ?**
+
+###### Gérer plusieurs conditions avec else if
+
+- On peut combiner plusieurs conditions avec else if pour gérer différents cas dans une expression. Le code montre comment cela fonctionne avec un exemple de divisibilité.  
+**Q: Comment peut-on gérer plusieurs conditions dans Rust ?**
+
+- Rust n'exécute que le premier bloc dont la condition est vérifiée. Cela peut entraîner des comportements inattendus si plusieurs conditions sont vraies.  
+**Q: Que se passe-t-il si plusieurs conditions sont vraies dans une expression else if ?**
+
+- L'utilisation excessive d'expressions else if peut encombrer le code ; d'autres constructions, comme match, peuvent être envisagées.  
+**Q: Pourquoi est-il conseillé d'éviter trop d'expressions else if dans un code Rust ?**
+
+###### Utiliser if dans une instruction let
+
+- Une expression if peut être utilisée pour assigner des valeurs à une variable. Le résultat de l'expression dépend de la condition.  
+**Q: Comment peut-on assigner le résultat d'une expression if à une variable dans Rust ?**
+
+- Les valeurs des branches if et else doivent être du même type pour éviter des erreurs de type.  
+**Q: Quels types de valeurs doivent être compatibles dans une expression if ?**
+
+#### Les répétitions avec les boucles
+
+- Les boucles permettent d'exécuter un bloc de code plusieurs fois. Rust propose trois types de boucles : loop, while, et for.  
+**Q: Quels types de boucles propose Rust pour répéter du code ?**
+
+###### Répéter du code avec `loop`
+- Le mot-clé `loop` en Rust demande au programme d'exécuter un bloc de code en continu. Cela crée une boucle infinie qui ne se termine que si une instruction explicite est donnée pour l'arrêter.  
+**Q: Quel est le rôle de la boucle `loop` en Rust ?**
+
+###### Exécution d'une boucle infinie
+- Lorsque vous exécutez un programme utilisant `loop`, comme dans l'exemple donné, le texte "À nouveau !" s'affiche sans interruption dans le terminal. Cette boucle continuera à s'exécuter jusqu'à ce qu'une interruption manuelle soit effectuée, généralement en utilisant `Ctrl+C`, ce qui provoque l'arrêt du programme. Le texte peut être affiché plusieurs fois avant que l'arrêt ne soit effectué, en fonction du moment où l'utilisateur interrompt le programme.  
+**Q: Que se passe-t-il lorsque l'on exécute une boucle infinie ?**
+
+###### Utilisation de `break` et `continue`
+- Rust fournit des moyens pour contrôler la sortie des boucles grâce aux mots-clés `break` et `continue`. Le mot `break` permet de quitter immédiatement la boucle courante, tandis que `continue` permet de sauter à l'itération suivante de la boucle. Lorsqu'il y a des boucles imbriquées, ces mots-clés affectent uniquement la boucle la plus interne, sauf si une étiquette de boucle est spécifiée, permettant ainsi une plus grande flexibilité dans le contrôle de la logique des boucles.  
+**Q: Comment `break` et `continue` fonctionnent-ils dans des boucles imbriquées ?**
+
+###### Retourner des valeurs d'une boucle
+- Les boucles `loop` peuvent également être utilisées pour exécuter des opérations qui pourraient échouer et nécessiter des réessais. Lorsqu'une certaine condition est atteinte, on peut utiliser `break` pour quitter la boucle tout en retournant une valeur. Cette valeur, que l'on peut stocker dans une variable, est ensuite accessible à l'extérieur de la boucle, permettant ainsi de l'utiliser dans d'autres parties du programme.  
+**Q: Comment peut-on retourner une valeur d'une boucle `loop` ?**
+
+###### Boucles conditionnelles avec `while`
+- Rust propose également la boucle `while`, qui exécute son bloc de code tant qu'une condition spécifiée est vraie. Cela évite la complexité que l'on pourrait avoir à gérer avec `loop`, `if`, et `break`. Par exemple, une boucle `while` peut être utilisée pour effectuer des répétitions jusqu'à ce qu'un compteur atteigne zéro. Ce type de boucle est souvent plus clair et plus concis pour des scénarios simples où une condition d'arrêt est nécessaire.  
+**Q: Pourquoi utiliser `while` est-il plus simple que d'utiliser `loop` avec des conditions ?**
+
+###### Boucler dans une collection avec `for`
+- La boucle `for` en Rust est conçue pour itérer facilement sur les éléments d'une collection, comme un tableau. Contrairement à `while`, elle gère automatiquement l'indexation et la condition d'arrêt, ce qui réduit le risque d'erreurs d'indexation. Par exemple, lors de l'itération sur un tableau, il n'est pas nécessaire de se soucier de dépasser les limites, car la boucle s'arrête automatiquement après avoir traité tous les éléments.  
+**Q: Quels avantages la boucle `for` offre-t-elle par rapport à `while` pour l'itération sur un tableau ?**
+
+###### Utilisation d'un intervalle avec `for`
+- Avec la boucle `for`, Rust permet également d'utiliser des intervalles pour exécuter du code sur une plage de nombres. Par exemple, l'utilisation de `(1..4).rev()` dans une boucle `for` permet de parcourir les nombres dans l'ordre inverse, rendant le code plus flexible et facile à comprendre. Cela simplifie également l'écriture de code pour des tâches récurrentes comme le décompte, car les utilisateurs n'ont pas à se préoccuper de gérer manuellement les indices ou les limites.  
+**Q: Qu'est-ce que la méthode `rev` apporte à l'utilisation des intervalles dans une boucle `for` ?**
+
+
+# 4. Comprendre la posession
