@@ -444,3 +444,57 @@ fn main() {
 
 
 # 3. Les concepts courants de programmation
+
+- Ce chapitre présente des concepts communs des langages de programmation, et la façon dont ils sont représentés en Rust, comme les variables, types de base, fonctions, commentaires et structures de contrôle...  
+**Q: Donnez des exemples de concepts qu'on trouve dans les différents languages de programmation?**
+
+- Rust réserve certains mots-clés pour un usage exclusif, similaires à d'autres langages. Ces mots-clés ne peuvent pas être utilisés pour nommer des variables ou des fonctions. La plupart sont utilisés pour des tâches spécifiques, tandis que certains sont réservés pour de futures fonctionnalités.  
+**Q: Dunnez des exemples de mot-clés non assosciés à des fonctionnalités.**
+
+
+### 3.1. Les variables et la mutabilité
+
+- En Rust, les variables sont immuables par défaut, ce qui aide à assurer la sécurité et la concurrence. Cependant, il est possible de rendre les variables modifiables avec le mot-clé ``mut``. Rust favorise l'immuabilité pour encourager des pratiques sûres, mais permet la mutabilité quand nécessaire, offrant ainsi un équilibre entre sécurité et flexibilité.  
+**Q: Quelle est l'état par défaut des variables dans Rust?**
+- Le compilateur aide à détecter les erreurs dans les programmes. Bien que frustrantes, les erreurs de compilation montrent que le programme n'est pas encore sécurisé. Il est crucial d'obtenir des erreurs de compilation lorsque nous essayons de modifier une valeur immuable, car cela peut entraîner des bugs difficiles à identifier. Si une partie de du code suppose qu'une valeur ne changera jamais alors qu'une autre partie la modifie, cela peut compromettre le fonctionnement de la première. Le compilateur Rust assure que les valeurs déclarées comme immuables ne changeront pas.  
+**Q: Quelle est l'importance d'obtenir des erreurs de compilation lorsque l'on essaie de modifier une valeur immuable dans un programme Rust ?**
+- La mutabilité est utile et facilite la rédaction du code. Les variables sont immuables par défaut, mais on peut les rendre mutables en ajoutant ``mut`` devant leur nom. Cela indique également aux lecteurs futurs que la valeur de cette variable sera modifiée par d'autres parties du code.  
+**Q: Que doit-on ajouter devant le nom d'une variable pour la rendre mutable en Rust ?**
+- L'utilisation de ``mut`` permet de modifier la valeur d'une variable. Il existe des compromis à considérer, comme la rapidité de la mutation d'une grande structure de données par rapport à la création d'une nouvelle instance. Pour les petites structures de données, une approche fonctionnelle peut améliorer la clarté du code, même si cela entraîne une légère perte de performance.  
+**Q: Pourquoi muter une instance existante d'une grande structure de données peut-il être plus rapide que de créer une nouvelle instance ?**
+
+###### Les constantes
+
+- Les constantes en Rust, tout comme les variables immuables, sont des valeurs attachées à un nom qui ne peuvent pas être modifiées. Toutefois, il existe des différences notables entre les deux.  
+**Q: Les constantes et les variables immuables peuvent-elles être modifiées ?**
+- Les constantes en Rust sont toujours immuables et ne peuvent pas être déclarées avec le mot-clé ``mut``. Elles se déclarent avec const au lieu de ``let``, et il est nécessaire de spécifier le type de la valeur. Les détails concernant les types seront abordés dans une section ultérieure.  
+**Q: Peut-on utiliser mut avec les constantes en Rust ?**
+- Les constantes en Rust peuvent être déclarées à n'importe quel endroit du code, y compris dans la portée globale, ce qui les rend particulièrement utiles pour des valeurs accessibles à de nombreuses parties du code.  
+**Q: Où peut-on déclarer des constantes en Rust ?**
+- Les constantes en Rust doivent être définies par une expression constante, et ne peuvent pas être le résultat d'une valeur qui nécessite un calcul à l'exécution.  
+**Q: Par quoi les constantes doivent-elles être définies par des expressions constantes en Rust ?**
+- Les constantes en Rust sont valables pendant toute la durée d'exécution du programme dans la portée où elles sont déclarées, ce qui les rend utiles pour partager des valeurs entre différentes parties du code.  
+**Q: Quelle est la durée de validité des constantes dans un programme Rust ?**
+- Utiliser des constantes pour déclarer des valeurs codées en dur dans votre programme aide à clarifier leur signification et facilite les modifications futures en centralisant leur gestion.  
+**Q: Quels sont les avantages d'utiliser des constantes pour les valeurs codées en dur dans un programme ?**
+
+###### Le masquage
+
+- En Rust, il est possible de déclarer une nouvelle variable avec le même nom qu'une variable précédente, masquant ainsi la première. Cela signifie que le programme utilisera la valeur de la seconde variable. Ce masquage s'effectue en réutilisant le mot-clé ``let``.  
+**Q: Que signifie le masquage d'une variable en Rust ?**
+- Créer un masque de variable est différent de marquer une variable comme mut, car une réassignation accidentelle d'une variable immuable entraîne une erreur de compilation. En utilisant ``let``, on peut transformer une valeur tout en rendant la variable immuable après ces transformations.  
+**Q: Quelle est la différence entre créer un masque de variable et marquer une variable comme mut en Rust ?**
+- En utilisant ``let``, on peut créer un masque de variable qui permet de changer le type de la valeur tout en réutilisant le même nom. Cela est utile dans des situations comme demander à l'utilisateur le nombre d'espaces souhaités entre deux portions de texte, où la saisie initiale pourrait être une chaîne de caractères, mais on veut la stocker ensuite sous forme de nombre.  
+**Q: Quelle est une situation où l'utilisation de let permet de changer le type d'une valeur tout en réutilisant le même nom de variable ?**
+
+### 3.2. Les types de données
+
+- En Rust, chaque valeur a un type spécifique qui guide le langage dans le traitement des données. Les types de données se classifient en deux catégories principales : les types scalaires, qui représentent des valeurs uniques, et les types composés, qui regroupent plusieurs valeurs.  
+**Q: Quelles sont les deux catégories de types de données en Rust ?**
+- Rust est un langage statiquement typé, nécessitant la connaissance des types de toutes les variables lors de la compilation. Souvent, le compilateur déduit le type en fonction de la valeur et de son utilisation. Cependant, dans des cas ambigus, comme lors de la conversion d'une chaîne en un type numérique avec parse, il est nécessaire d'ajouter une annotation de type.  
+**Q: Qu'est-ce que signifie qu'un langage est statiquement typé, et comment Rust gère-t-il les types des variables ?**
+
+#### Types scalaires
+
+- Un type scalaire en Rust représente une seule valeur et comprend quatre types principaux : les entiers, les nombres à virgule flottante, les booléens et les caractères, similaires à d'autres langages de programmation.
+**Q: Quels sont les quatre types principaux de scalaires en Rust ?**
