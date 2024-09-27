@@ -33,13 +33,13 @@
 - Quelle fonction est automatiquement appelée lorsque qu'un String sort de sa portée ?  
 		La fonction drop.
 - Une valeur de type String nécessite de la mémoire: uniquement dans le tas, uniquement sur la pile, ou sur les deux ?  
-		Le type String nécessite de la mémoire sur le tas.
+		Le type String nécessite de la mémoire de pile pour les données internes (pointeur, capacité, taille) et sa valeur est mise dans le tas.
 - Qu'est-ce qu'une "double libérations" (ou "double free")  et son rapport avec la sécurité informatique ?  
 		C'est quand on libère deux fois la mémoire sur le tas, ce qui peut emmener à une perte de données non accessibles engendrant un mauvais résultat ou une erreur d'éxecution.
 - Étant donnée la façon dont Rust gère la mémoire, pourquoi serait-il un problème que deux pointeurs possèdent la même mémoire dans la tas en même temps ?  
 		Parceque dans le cas de la sortie de la portée, il se peut que les deux pointeurs se libèrent en même temps et on aura donc une double libèration, pouvant corrompre la mémoire. 
 - Vrai, faux ou autre ? "Une instruction telle que `let y = x;` peut parfois représentée une copie profonde couteuse."  
-		Faux, Rust fait une commpie en déplacement, déplacant x dans y. Il considère que l'ancienne valeur n'est plus en vigeur et l'affect à la nouvelle variable.
+		Autre, dans le cas où Rust fait un déplacement, déplacant x dans y. Il considère que l'ancienne valeur n'est plus en vigeur et l'affect à la nouvelle variable, ce qui n'est pas couteux. Mais lorsqu'il fait une copie profonde cela handicap la performance.
 - Quelle est la différence entre un déplacement et une copie superficielle ?  
 		Une copie superficielle consiste à copier le pointeur, tandis que le déplacement considère que l'ancienne valeur n'est plus en vigeur et déplace cette valeur dans la nouvelle variable.
 - Vrai, faux ou autre ? "Si on souhaite qu'un type fasse une copie il *suffit simplement* d'annoter ce type avec le trait Copy."  
@@ -115,4 +115,4 @@
 	Oui, en utilisant une nouvelle instance String qui va prendre la partie souhaitée. Cependant, donne une grande utilisation de la mémoire et baisse de performance.
 - Si on a un variable `s` de type `String`, quel est le type de `&s` ? Vers quoi pointe le pointeur sous-jacent de `&s` ? quel est le type de `&s[..]` ?  Vers quoi pointe le pointeur sous-jacent de `&s[..]` ?  
 		&s est de type &String, elle pointe vers l'emplacement mémoire de l'objet.  
-		Le type &s[..] est &str, il pointe vers les données internes comme le premier élement, la taille du String...
+		Le type &s[..] est &str, il pointe vers les données internes comme le premier élement, la taille du Sftring...
