@@ -404,7 +404,7 @@ let supposition: u32 = match supposition.trim().parse() {
 - Si ``parse()`` échoue, elle retourne ``Err`` avec des informations sur l'erreur. Le motif ``Err(_)`` dans l'expression ``match`` correspond à toutes les variantes ``Err``, peu importe leur contenu. Le programme exécutera alors le code de la branche ``continue``, qui passe à l'itération suivante de la boucle et demande un nouveau nombre, ignorant ainsi les erreurs de ``parse()``.  
 **Q: Quel est le rôle de l'expression "continue"?**
 - Finalement, on peux supprimer l'instruction qui affiche le nombre secret qui était utile pour le test. Le jeu est maintenant fini, on peut le lancer et y jouer.
-```
+```rust
 use rand::Rng;
 use std::cmp::Ordering;
 use std::io;
@@ -711,3 +711,18 @@ Le dernier élément d'une fonction est souvent la valeur retournée, et une fon
 
 
 # 4. Comprendre la posession
+
+- La possession est un concept clé en Rust, permettant de gérer la mémoire sans garbage collector. Chaque valeur a un propriétaire unique, et quand ce propriétaire cesse d'exister, la mémoire est libérée. Ce chapitre explore la possession, l'emprunt, les slices, et la gestion de la mémoire.  
+**Q: Quel est l'objectif principal de la possession en Rust ?**
+
+### Qu'est ce que la possession
+
+- La possession en Rust est un ensemble de règles permettant de gérer la mémoire sans ralentir l'exécution. Contrairement aux langages avec ramasse-miettes ou allocation manuelle, Rust gère la mémoire via la possession, en s'assurant que les règles sont respectées à la compilation. Si une règle est enfreinte, le programme ne compile pas.  
+**Q: Comment Rust gère-t-il la mémoire différemment des autres langages ?**
+- Comme la possession est un concept nouveau pour beaucoup, il faut un peu de temps pour s'y habituer. Mais avec de l'expérience, écrire du code sûr et efficace en respectant les règles de possession devient de plus en plus naturel.  
+**Q: Quel est l'avantage d'acquérir de l'expérience avec les règles de possession en Rust ?**
+- Lorsque vous maîtriserez la possession, vous disposerez des bases nécessaires pour comprendre les fonctionnalités uniques de Rust. Ce chapitre vous apprendra la possession à travers des exemples pratiques, principalement avec les chaînes de caractères.  
+**Q: Quelle structure de données est utilisée pour illustrer la possession dans ce chapitre ?**
+
+#### La pile et le tas
+
