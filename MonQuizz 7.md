@@ -1,3 +1,5 @@
+# CHAPITRE 7
+
 - Quels sont les différentes fonctionnalités du système de module de Rust?
 - Quelle est la différence entre une crate et un paquet?
 - Quelle est la différence entre une crate de bibliothèque et une crate binaire?
