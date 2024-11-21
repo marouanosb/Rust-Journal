@@ -18,7 +18,7 @@ Le type est de type `char`.
 Vaut mieux utilisier `v.get(i)` pour pouvoir indiquer à l'utilisateur qu'il a tapé un indexe très grande si le programme reàoit `None`, ce qui est mieux que planter le programme sans que l'utilisateur sache quel était le problème.
 - Quel règle du vérificateur d'emprunt est violé lorsque si l'on écrit `let mut v = vec![1,2]; let x = v.get(0); v.push(3); let y = x;` ?  
 On peut pas avoir une réference mutable `v.push(3)` et immuable `v.get(0)` en même temps.
-- Réécrire la boucle sur collection suivante de façon plus idiomatique
+- Réécrire la boucle sur collection suivante de façon plus idiomatique.
   ```rust
 	let v = vec!['h','e','l','l','o'];
 	for i in &v {
